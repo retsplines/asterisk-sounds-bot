@@ -125,7 +125,7 @@ def lambda_handler(event, context):
             f'"{transcription}"\n\n' +
             f':ms_asterisk: Asterisk sound \'{sound_name}\'\n' +
             f'📦 From package \'{package_name}\'\n' +
-            f'{locale.flag} Spoken in {locale.name})', media_ids=[media_upload]
+            f'{locale.flag} Spoken in {locale.name}', media_ids=[media_upload]
         )
 
         logger.info('✅ Posted to Mastodon')
