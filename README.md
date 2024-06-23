@@ -21,3 +21,5 @@ If this bot misbehaves, or otherwise upsets you in some way, please reach out th
 The bot source code contained in this repository is hereby released under the [MIT](./LICENSE.md) license.
 
 The [sound files](https://downloads.asterisk.org/pub/telephony/sounds/) posted by the bot are covered by the [Creative Commons Attribution-Share Alike 3.0](https://creativecommons.org/licenses/by-sa/3.0/us/) license according the the [Asterisk documentation](https://docs.asterisk.org/About-the-Project/License-Information/Voice-Prompts-and-Music-on-Hold-License/).
+
+<a rel="me" href="https://botsin.space/@isthisyiff"></a>
