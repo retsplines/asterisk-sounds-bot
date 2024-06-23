@@ -1,0 +1,29 @@
+name: Build & Deploy
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+    
+  # Deployment of the Lambda Function
+  deploy_lambdas:
+    name: Deploy Lambda Function
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Zip the code
+        run: zip -r deployment.zip .
+      - name: Deploy API Lambda
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: eu-west-1
+          function_name: asterisk-sounds-bot
+          zip_file: deployment.zip

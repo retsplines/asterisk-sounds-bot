@@ -4,7 +4,7 @@ A silly bot that posts [sounds](https://downloads.asterisk.org/pub/telephony/sou
 
 ## Operation
 
-An AWS Lambda function (`post.py`) reads the list of available sounds from `data/sound-list.txt`, selects one and posts it to Fedi.
+An AWS Lambda function (`src/main.py`) reads the list of available sounds from `data/sound-list.txt`, selects one and posts it to Fedi.
 
 The Lambda function is invoked by an hourly Amazon EventBridge schedule.
 

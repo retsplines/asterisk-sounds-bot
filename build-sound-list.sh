@@ -7,8 +7,8 @@
 #
 
 # Define the minimum file size
-# 15KB seems to be a good threshold
-MIN_FILE_SIZE=15000
+# 20KB seems to be a good threshold for filtering out small/short files
+MIN_FILE_SIZE=20000
 
 # List the sound file archives we're interested in
 SOUND_ARCHIVE_URLS=(
@@ -33,14 +33,14 @@ rm -f data/sound-list.txt
 # Download the sound files if needed
 for url in "${SOUND_ARCHIVE_URLS[@]}"; do
 
-    url_data_filename=data/$(basename $url)
+    url_data_filename=$(basename $url)
     if [ ! -f $url_data_filename ]; then
         echo "Downloading $url"
         wget -O $url_data_filename $url
     fi
 
     # Extract ze file under the filename directory
-    directoryname=${url_data_filename%.tar.gz}
+    directoryname=data/${url_data_filename%.tar.gz}
     mkdir -p $directoryname
     tar -xzf $url_data_filename -C $directoryname
 
@@ -76,14 +76,21 @@ for url in "${SOUND_ARCHIVE_URLS[@]}"; do
         fi
 
         # Extract the transcription part
-        transcription=$(echo "$line" | awk -F ':' '{print $2}')
-    
+        transcription=$(echo "$line" | awk -F ':' '{print $2}' | xargs 2>/dev/null)
+
         # Check if the file is too small
         filesize=$(wc -c $directoryname/$filename | awk '{print $1}')
 
+        # If the transcription ended up empty, skip it
+        if [ -z "$transcription" ]; then
+            continue
+        fi
+
         # If the file is big enough, add it to the sound-list.txt file
         if [ $filesize -gt $MIN_FILE_SIZE ]; then
-            echo "$directoryname/$filename $language $transcription" >> data/sound-list.txt
+            # Remove data/ from the directory name
+            s3_directoryname=${directoryname#data/}
+            echo "$s3_directoryname/$filename\t$language\t$transcription" >> data/sound-list.txt
         else
             # Remove the file so we don't upload it
             rm $directoryname/$filename
