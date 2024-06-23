@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt -t .
       - name: Zip the code
         run: zip -r deployment.zip .
       - name: Deploy API Lambda
