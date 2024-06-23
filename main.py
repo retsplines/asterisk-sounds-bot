@@ -123,7 +123,7 @@ def lambda_handler(event, context):
         # Post the sound
         mastodon.status_post(
             f'"{transcription}"\n\n' +
-            f':ms_asterisk: Asterisk sound \'{sound_name}\'\n' +
+            f'*️⃣ Asterisk sound \'{sound_name}\'\n' +
             f'📦 From package \'{package_name}\'\n' +
             f'{locale.flag} Spoken in {locale.name}', media_ids=[media_upload], visibility='public'
         )
