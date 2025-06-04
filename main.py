@@ -104,6 +104,7 @@ def lambda_handler(event, context):
 
         # Authenticate
         mastodon = Mastodon(
+            version_check_mode="none",
             access_token=MASTODON_ACCESS_TOKEN,
             api_base_url=MASTODON_INSTANCE,
             user_agent='asterisk-sound-bot'

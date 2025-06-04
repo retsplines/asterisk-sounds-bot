@@ -1,6 +1,6 @@
-# [`asterisk-sounds-bot`](https://botsin.space/@asterisksounds)
+# [`asterisk-sounds-bot`](https://botsinbox.net/@asterisksounds)
 
-A silly bot that posts [sounds](https://downloads.asterisk.org/pub/telephony/sounds/) from the [Asterisk PBX](https://www.asterisk.org/) to the [fediverse](https://botsin.space/@asterisksounds).
+A silly bot that posts [sounds](https://downloads.asterisk.org/pub/telephony/sounds/) from the [Asterisk PBX](https://www.asterisk.org/) to the [fediverse](https://botsinbox.net/@asterisksounds).
 
 ## Operation
 
@@ -22,4 +22,4 @@ The bot source code contained in this repository is hereby released under the [M
 
 The [sound files](https://downloads.asterisk.org/pub/telephony/sounds/) posted by the bot are covered by the [Creative Commons Attribution-Share Alike 3.0](https://creativecommons.org/licenses/by-sa/3.0/us/) license according the the [Asterisk documentation](https://docs.asterisk.org/About-the-Project/License-Information/Voice-Prompts-and-Music-on-Hold-License/).
 
-<a rel="me" href="https://botsin.space/@isthisyiff"></a>
+<a rel="me" href="https://botsinbox.net/@asterisksounds"></a>
