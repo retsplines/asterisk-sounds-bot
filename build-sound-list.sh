@@ -74,27 +74,53 @@ for url in "${SOUND_ARCHIVE_URLS[@]}"; do
         if [ ! -f $directoryname/$filename ]; then
             continue
         fi
+        
+        # If the line contains a :, it should contain the transcription
+        if [[ $line != *:* ]]; then
+            transcription=""
+        else
+            # Extract the transcription part, which is everything after the first colon
+            transcription=$(echo "$line" | cut -d ':' -f 2-)
 
-        # Extract the transcription part
-        transcription=$(echo "$line" | awk -F ':' '{print $2}' | xargs 2>/dev/null)
+            # Remove leading and trailing whitespace
+            transcription=$(echo "$transcription" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        fi
 
         # Check if the file is too small
         filesize=$(wc -c $directoryname/$filename | awk '{print $1}')
 
-        # If the transcription ended up empty, skip it
+        # If the transcription ended up empty, set a default value
         if [ -z "$transcription" ]; then
-            continue
+            echo "Warning: No transcription for $filename."
+            transcription="(Surprise! No transcription available)"
         fi
 
         # If the file is big enough, add it to the sound-list.txt file
         if [ $filesize -gt $MIN_FILE_SIZE ]; then
+
             # Remove data/ from the directory name
             s3_directoryname=${directoryname#data/}
-            echo "$s3_directoryname/$filename\t$language\t$transcription" >> data/sound-list.txt
+
+            # Convert the wav file to mp3 format, GoToSocial doesn't support wav files :(
+            # https://codeberg.org/superseriousbusiness/gotosocial/src/tag/v0.19.1/internal/media/ffmpeg.go#L334
+            mp3_filename=$(basename "$filename" .wav).mp3
+            echo "Converting $directoryname/$filename to $directoryname/$mp3_filename"
+            ffmpeg -loglevel error -y -i "$directoryname/$filename" -acodec libmp3lame -ar 44100 -ac 2 -ab 192k -f mp3 "$directoryname/$mp3_filename"
+
+            if [ $? -ne 0 ]; then
+                echo "Error converting $filename to mp3 format, skipping."
+                exit 1
+            fi
+
+            echo "$s3_directoryname/$mp3_filename\t$language\t$transcription" >> data/sound-list.txt
+
         else
-            # Remove the file so we don't upload it
-            rm $directoryname/$filename
+            echo "Skipping $filename, file size $filesize is less than minimum size $MIN_FILE_SIZE bytes."
         fi
+
+        # Remove the original file
+        echo "Removing $directoryname/$filename"
+        rm $directoryname/$filename
 
     done < $listingfile
 
