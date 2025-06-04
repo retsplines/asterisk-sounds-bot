@@ -122,8 +122,8 @@ def lambda_handler(event, context):
         mastodon.media_update(media_upload, description=alt_text)
 
         # Gah - we converted the wavs in the original archives to mp3s, so change the name for display purposes
-        if sound_name.endswith('.wav'):
-            sound_name = sound_name[:-4] + '.mp3'
+        if sound_name.endswith('.mp3'):
+            sound_name = sound_name[:-4] + '.wav'
 
         # Post the sound
         mastodon.status_post(
